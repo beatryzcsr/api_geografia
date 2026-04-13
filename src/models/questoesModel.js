@@ -79,7 +79,7 @@ async function buscarPorTopico(topicoid) {
 //exibir resposta select 2
 async function buscarPorPalavra(palavraChave) {
 
-    const sql = 'SELECT resposta FROM questoes WHERE enunciado ILIKE $1';
+    const sql = 'SELECT enunciado, resposta FROM questoes WHERE enunciado ILIKE $1';
     
     const result = await pool.query(
     sql, [`%${palavraChave}%`]
@@ -103,6 +103,25 @@ async function buscarVisao() {
 
 
 
+//select 1 disciplina 
+async function buscarPorMateria(topicoid) {
+  const result = await pool.query(
+    'SELECT enunciado, resposta FROM questoes WHERE topicoid = $5 OR topicoid = $6 OR topicoid = $7 OR topicoid = $8',
+    [topicoid]
+  );
+  return result.rows;
+}
+
+//select 2 topico
+async function buscarPorTopico(topicoid) {
+  const result = await pool.query(
+    'SELECT enunciado, resposta FROM questoes WHERE topicoid = $1',
+    [topicoid]
+  );
+  return result.rows;
+}
+
+
 //exportando
 module.exports = {
   listarTodos,
@@ -112,5 +131,8 @@ module.exports = {
   deletar,
   buscarPorTopico,
   buscarPorPalavra,
-  buscarVisao
+  buscarVisao,
+  buscarPorMateria,
+  buscarPorTopico,
+
 };
